@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"github.com/dev-oleksandrv/easy-pobyt/gatekeeper/internal/config"
 	"github.com/dev-oleksandrv/easy-pobyt/gatekeeper/internal/database"
+	"github.com/dev-oleksandrv/easy-pobyt/gatekeeper/internal/modules/backoffice-proxy/handler"
+	"github.com/dev-oleksandrv/easy-pobyt/gatekeeper/internal/modules/backoffice-proxy/service"
+	"github.com/dev-oleksandrv/easy-pobyt/gatekeeper/internal/repository"
 	"github.com/gin-gonic/gin"
 	"log/slog"
 	"os"
@@ -31,9 +34,23 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println(db, "connected to database")
+	questionRepository := repository.NewQuestionRepository(db)
+	questionService := service.NewQuestionService(questionRepository)
+	questionHandler := handler.NewQuestionHandler(questionService)
 
 	router := gin.Default()
+
+	apiGroup := router.Group("/api")
+
+	questionGroup := apiGroup.Group("/question")
+	{
+		questionGroup.GET("/list", questionHandler.GetAll)
+		questionGroup.GET("/:id", questionHandler.GetByID)
+		questionGroup.POST("/", questionHandler.Create)
+		questionGroup.POST("/batch", questionHandler.BatchCreate)
+		questionGroup.PUT("/:id", questionHandler.Update)
+		questionGroup.DELETE("/:id", questionHandler.Delete)
+	}
 
 	if err := router.Run(fmt.Sprintf(":%d", cfg.AdminProxy.Port)); err != nil {
 		slog.Error("failed to start server", "err", err)

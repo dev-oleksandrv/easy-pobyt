@@ -46,7 +46,7 @@ export function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu>
                 {group.children.map((item, itemIndex) => (
-                  <SidebarMenuItem key={index}>
+                  <SidebarMenuItem key={itemIndex}>
                     <SidebarMenuButton asChild>
                       <Link href={item.href}>
                         <item.icon />

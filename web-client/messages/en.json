@@ -1,0 +1,12 @@
+{
+  "HomePage": {
+    "Header": {
+      "features": "Features",
+      "pricing": "Pricing",
+      "faq": "FAQ",
+      "login": "Log In",
+      "register": "Sign Up Free"
+    },
+    "title": "Hello, world!"
+  }
+}

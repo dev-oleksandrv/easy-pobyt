@@ -8,6 +8,7 @@ import (
 	"github.com/dev-oleksandrv/easy-pobyt/gatekeeper/internal/modules/backoffice-proxy/service"
 	"github.com/dev-oleksandrv/easy-pobyt/gatekeeper/internal/repository"
 	"github.com/gin-gonic/gin"
+	"github.com/sashabaranov/go-openai"
 	"log/slog"
 	"os"
 )
@@ -34,6 +35,11 @@ func main() {
 		os.Exit(1)
 	}
 
+	openaiClient := openai.NewClient(cfg.AdminAI.APIKey)
+
+	aiService := service.NewAIService(cfg, openaiClient)
+	aiHandler := handler.NewAIHandler(aiService)
+
 	questionRepository := repository.NewQuestionRepository(db)
 	questionService := service.NewQuestionService(questionRepository)
 	questionHandler := handler.NewQuestionHandler(questionService)
@@ -41,6 +47,11 @@ func main() {
 	router := gin.Default()
 
 	apiGroup := router.Group("/api")
+
+	aiGroup := apiGroup.Group("/ai")
+	{
+		aiGroup.POST("/generate-questions", aiHandler.GenerateQuestions)
+	}
 
 	questionGroup := apiGroup.Group("/question")
 	{

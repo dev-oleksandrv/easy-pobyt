@@ -30,6 +30,12 @@ type AdminAuthConfig struct {
 	Secret string
 }
 
+type AdminAIConfig struct {
+	APIKey        string
+	QGAssistantID string
+	QGThreadID    string
+}
+
 type WebAdminConfig struct {
 	ClientUrl string
 }
@@ -40,5 +46,6 @@ type Config struct {
 	Postgres   PostgresConfig
 	AppAuth    AppAuthConfig
 	AdminAuth  AdminAuthConfig
+	AdminAI    AdminAIConfig
 	WebAdmin   WebAdminConfig
 }

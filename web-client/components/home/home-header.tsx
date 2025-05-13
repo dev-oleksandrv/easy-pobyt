@@ -71,13 +71,13 @@ export function HomeHeader() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Link href="/login">
+            <Link href="/auth#login">
               <Button variant="outline" className="border-[#0C3B5F] text-[#0C3B5F]">
                 {t("login")}
               </Button>
             </Link>
 
-            <Link href="/register">
+            <Link href="/auth#register">
               <Button className="bg-gradient-to-r from-[#E12D39] to-[#FF4D58] text-white shadow-md border border-[#E12D39]/20 hover:shadow-lg transition-all">
                 {t("register")}
               </Button>
@@ -171,12 +171,12 @@ export function HomeHeader() {
                 {t("faq")}
               </a>
               <div className="flex gap-2 pt-2">
-                <Link href="/login" className="flex-1">
+                <Link href="/auth#login" className="flex-1">
                   <Button variant="outline" className="w-full border-[#0C3B5F] text-[#0C3B5F]">
                     {t("login")}
                   </Button>
                 </Link>
-                <Link href="/register" className="flex-1">
+                <Link href="/auth#register" className="flex-1">
                   <Button className="w-full bg-gradient-to-r from-[#E12D39] to-[#FF4D58] text-white shadow-md border border-[#E12D39]/20 hover:shadow-lg transition-all">
                     {t("register")}
                   </Button>

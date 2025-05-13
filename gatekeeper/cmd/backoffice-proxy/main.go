@@ -7,6 +7,7 @@ import (
 	"github.com/dev-oleksandrv/easy-pobyt/gatekeeper/internal/modules/backoffice-proxy/handler"
 	"github.com/dev-oleksandrv/easy-pobyt/gatekeeper/internal/modules/backoffice-proxy/service"
 	"github.com/dev-oleksandrv/easy-pobyt/gatekeeper/internal/repository"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
 	"log/slog"
@@ -45,6 +46,14 @@ func main() {
 	questionHandler := handler.NewQuestionHandler(questionService)
 
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowOriginFunc: func(origin string) bool {
+			return origin == cfg.BackofficeClient.Url
+		},
+		AllowHeaders:     []string{"Origin", "Content-Type"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowCredentials: true,
+	}))
 
 	apiGroup := router.Group("/api")
 

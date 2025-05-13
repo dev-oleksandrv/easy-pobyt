@@ -3,7 +3,7 @@ import { QuestionType } from "@/types/question-types";
 
 export const questionsCreateAnswerSchema = z.object({
   text: z.string(),
-  isCorrect: z.boolean().default(false),
+  is_correct: z.boolean().default(false),
 });
 
 export const questionsCreateContentSchema = z.object({

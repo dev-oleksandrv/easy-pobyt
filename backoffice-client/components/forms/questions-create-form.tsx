@@ -28,6 +28,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { AIQuestionsGenerationModal } from "@/components/modals/ai-questions-generation-modal";
+import { questionService } from "@/services/question-service";
+import { useRouter } from "next/navigation";
 
 interface TypeSelectProps {
   index: number;
@@ -124,7 +127,7 @@ function ContentGroupAnswersSubForm({
   const addAnswerHandler = () => {
     answersController.append({
       text: "",
-      isCorrect: false,
+      is_correct: false,
     });
   };
 
@@ -152,7 +155,7 @@ function ContentGroupAnswersSubForm({
 
           <FormField
             control={control}
-            name={`questions.${questionIndex}.contents.${groupIndex}.answers.${fieldIndex}.text`}
+            name={`questions.${questionIndex}.contents.${groupIndex}.answers.${fieldIndex}.is_correct`}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Is Correct</FormLabel>
@@ -181,7 +184,7 @@ function ContentGroupContentSubForm({
     <div className="flex flex-col gap-2">
       <FormField
         control={control}
-        name={`questions.${questionIndex}.contents.${groupIndex}.text`}
+        name={`questions.${questionIndex}.contents.${groupIndex}.content.text`}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Text</FormLabel>
@@ -192,7 +195,7 @@ function ContentGroupContentSubForm({
 
       <FormField
         control={control}
-        name={`questions.${questionIndex}.contents.${groupIndex}.explanation`}
+        name={`questions.${questionIndex}.contents.${groupIndex}.content.explanation`}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Explanation</FormLabel>
@@ -203,7 +206,7 @@ function ContentGroupContentSubForm({
 
       <FormField
         control={control}
-        name={`questions.${questionIndex}.contents.${groupIndex}.image_url`}
+        name={`questions.${questionIndex}.contents.${groupIndex}.content.image_url`}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Image URL</FormLabel>
@@ -295,6 +298,8 @@ function ContentGroupCard({ index, onDelete }: ContentGroupCardProps) {
 }
 
 export function QuestionsCreateForm() {
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(questionsBatchCreateSchema),
     mode: "onChange",
@@ -305,7 +310,24 @@ export function QuestionsCreateForm() {
     name: "questions",
   });
 
-  const submitHandler = (values: QuestionsBatchCreateSchemaType) => {};
+  const submitHandler = async (values: QuestionsBatchCreateSchemaType) => {
+    try {
+      await questionService.batchCreate(values);
+
+      router.push("/questions");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const generationHandler = (batch: QuestionsBatchCreateSchemaType) => {
+    batch.questions.forEach((item) => {
+      console.log(item);
+      questionsController.prepend(item);
+    });
+
+    console.log(questionsController.fields);
+  };
 
   const addQuestionHandler = () => {
     questionsController.append({
@@ -336,12 +358,14 @@ export function QuestionsCreateForm() {
               <span>Add Question</span>
             </Button>
 
-            <Button variant="outline">
-              <SparklesIcon />
-              <span>AI Generation</span>
-            </Button>
+            <AIQuestionsGenerationModal onSubmit={generationHandler}>
+              <Button variant="outline">
+                <SparklesIcon />
+                <span>AI Generation</span>
+              </Button>
+            </AIQuestionsGenerationModal>
 
-            <Button disabled>
+            <Button type="submit">
               <CheckIcon />
               <span>Save Changes</span>
             </Button>

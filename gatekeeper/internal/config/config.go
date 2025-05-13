@@ -40,12 +40,21 @@ type WebAdminConfig struct {
 	ClientUrl string
 }
 
+type WebClientConfig struct {
+	Url string
+}
+
+type BackofficeClientConfig struct {
+	Url string
+}
+
 type Config struct {
-	AppProxy   AppProxyConfig
-	AdminProxy AdminProxyConfig
-	Postgres   PostgresConfig
-	AppAuth    AppAuthConfig
-	AdminAuth  AdminAuthConfig
-	AdminAI    AdminAIConfig
-	WebAdmin   WebAdminConfig
+	AppProxy         AppProxyConfig
+	AdminProxy       AdminProxyConfig
+	Postgres         PostgresConfig
+	AppAuth          AppAuthConfig
+	AdminAuth        AdminAuthConfig
+	AdminAI          AdminAIConfig
+	WebClient        WebClientConfig
+	BackofficeClient BackofficeClientConfig
 }

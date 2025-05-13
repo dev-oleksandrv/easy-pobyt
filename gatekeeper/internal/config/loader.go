@@ -32,7 +32,8 @@ func LoadConfig() (*Config, error) {
 	config.Postgres.Url = viper.GetString("POSTGRES_URL")
 	config.Postgres.AutoMigrateEnabled = viper.GetBool("POSTGRES_AUTO_MIGRATE_ENABLED")
 
-	config.WebAdmin.ClientUrl = viper.GetString("WEB_CLIENT_URL")
+	config.WebClient.Url = viper.GetString("WEB_CLIENT_URL")
+	config.BackofficeClient.Url = viper.GetString("BACKOFFICE_CLIENT_URL")
 
 	return config, nil
 }

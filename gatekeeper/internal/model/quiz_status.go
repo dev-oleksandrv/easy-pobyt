@@ -17,7 +17,7 @@ const (
 func (q *QuizStatus) Scan(value interface{}) error {
 	strValue, ok := value.(string)
 	if !ok {
-		return errors.New("question type type assertion to string failed")
+		return errors.New("quiz status assertion to string failed")
 	}
 
 	switch strValue {

@@ -41,6 +41,10 @@ func main() {
 	aiService := service.NewAIService(cfg, openaiClient)
 	aiHandler := handler.NewAIHandler(aiService)
 
+	interviewerRepository := repository.NewInterviewerRepository(db)
+	interviewerService := service.NewInterviewerService(interviewerRepository)
+	interviewerHandler := handler.NewInterviewerHandler(interviewerService)
+
 	questionRepository := repository.NewQuestionRepository(db)
 	questionService := service.NewQuestionService(questionRepository)
 	questionHandler := handler.NewQuestionHandler(questionService)
@@ -70,6 +74,15 @@ func main() {
 		questionGroup.POST("/batch", questionHandler.BatchCreate)
 		questionGroup.PUT("/:id", questionHandler.Update)
 		questionGroup.DELETE("/:id", questionHandler.Delete)
+	}
+
+	interviewerGroup := apiGroup.Group("/interviewer")
+	{
+		interviewerGroup.GET("/list", interviewerHandler.GetAll)
+		interviewerGroup.GET("/:id", interviewerHandler.GetByID)
+		interviewerGroup.POST("/", interviewerHandler.Create)
+		interviewerGroup.PUT("/:id", interviewerHandler.Update)
+		interviewerGroup.DELETE("/:id", interviewerHandler.Delete)
 	}
 
 	if err := router.Run(fmt.Sprintf(":%d", cfg.AdminProxy.Port)); err != nil {

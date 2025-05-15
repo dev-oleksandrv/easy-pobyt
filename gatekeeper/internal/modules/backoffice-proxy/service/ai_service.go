@@ -28,26 +28,26 @@ func NewAIService(config *config.Config, openaiClient *openai.Client) AIService 
 func (s *aiServiceImpl) GenerateQuestions(ctx context.Context, input *dto.AIGenerateQuestionsInputDto) (*dto.QuestionBatchInputDto, error) {
 	prompt := fmt.Sprintf("langs=%s;limit=%d", strings.Join(input.Langs, ","), input.Limit)
 
-	if _, err := s.openaiClient.CreateMessage(ctx, s.config.AdminAI.QGThreadID, openai.MessageRequest{
+	if _, err := s.openaiClient.CreateMessage(ctx, s.config.AI.QuestionsGenerationThreadID, openai.MessageRequest{
 		Role:    openai.ChatMessageRoleUser,
 		Content: prompt,
 	}); err != nil {
 		return nil, err
 	}
 
-	run, err := s.openaiClient.CreateRun(ctx, s.config.AdminAI.QGThreadID, openai.RunRequest{
-		AssistantID: s.config.AdminAI.QGAssistantID,
+	run, err := s.openaiClient.CreateRun(ctx, s.config.AI.QuestionsGenerationThreadID, openai.RunRequest{
+		AssistantID: s.config.AI.QuestionsGenerationAssistantID,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	if _, err := pollRunStatus(ctx, s.openaiClient, s.config.AdminAI.QGThreadID, run.ID); err != nil {
+	if _, err := pollRunStatus(ctx, s.openaiClient, s.config.AI.QuestionsGenerationThreadID, run.ID); err != nil {
 		return nil, err
 	}
 
 	limit, order := 1, "desc"
-	msgResponse, err := s.openaiClient.ListMessage(ctx, s.config.AdminAI.QGThreadID, &limit, &order, nil, nil, &run.ID)
+	msgResponse, err := s.openaiClient.ListMessage(ctx, s.config.AI.QuestionsGenerationThreadID, &limit, &order, nil, nil, &run.ID)
 	if err != nil {
 		return nil, err
 	}

@@ -25,9 +25,11 @@ func LoadConfig() (*Config, error) {
 	config.AdminProxy.Port = viper.GetInt("ADMIN_PROXY_PORT")
 	config.AdminProxy.Env = viper.GetString("ADMIN_PROXY_ENV")
 	config.AdminAuth.Secret = viper.GetString("ADMIN_AUTH_SECRET")
-	config.AdminAI.APIKey = viper.GetString("ADMIN_AI_API_KEY")
-	config.AdminAI.QGAssistantID = viper.GetString("ADMIN_AI_QG_ASSISTANT_ID")
-	config.AdminAI.QGThreadID = viper.GetString("ADMIN_AI_QG_THREAD_ID")
+
+	config.AI.APIKey = viper.GetString("AI_API_KEY")
+	config.AI.QuestionsGenerationAssistantID = viper.GetString("AI_QUESTIONS_GENERATION_ASSISTANT_ID")
+	config.AI.QuestionsGenerationThreadID = viper.GetString("AI_QUESTIONS_GENERATION_THREAD_ID")
+	config.AI.InterviewAssistantID = viper.GetString("AI_INTERVIEW_ASSISTANT_ID")
 
 	config.Postgres.Url = viper.GetString("POSTGRES_URL")
 	config.Postgres.AutoMigrateEnabled = viper.GetBool("POSTGRES_AUTO_MIGRATE_ENABLED")

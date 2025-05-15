@@ -36,7 +36,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	openaiClient := openai.NewClient(cfg.AdminAI.APIKey)
+	openaiClient := openai.NewClient(cfg.AI.APIKey)
 
 	aiService := service.NewAIService(cfg, openaiClient)
 	aiHandler := handler.NewAIHandler(aiService)

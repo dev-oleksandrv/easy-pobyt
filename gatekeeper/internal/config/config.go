@@ -10,6 +10,13 @@ type AdminProxyConfig struct {
 	Env  string
 }
 
+type AIConfig struct {
+	APIKey                         string
+	QuestionsGenerationAssistantID string
+	QuestionsGenerationThreadID    string
+	InterviewAssistantID           string
+}
+
 type PostgresConfig struct {
 	Url                string
 	AutoMigrateEnabled bool
@@ -30,12 +37,6 @@ type AdminAuthConfig struct {
 	Secret string
 }
 
-type AdminAIConfig struct {
-	APIKey        string
-	QGAssistantID string
-	QGThreadID    string
-}
-
 type WebAdminConfig struct {
 	ClientUrl string
 }
@@ -51,10 +52,10 @@ type BackofficeClientConfig struct {
 type Config struct {
 	AppProxy         AppProxyConfig
 	AdminProxy       AdminProxyConfig
+	AI               AIConfig
 	Postgres         PostgresConfig
 	AppAuth          AppAuthConfig
 	AdminAuth        AdminAuthConfig
-	AdminAI          AdminAIConfig
 	WebClient        WebClientConfig
 	BackofficeClient BackofficeClientConfig
 }

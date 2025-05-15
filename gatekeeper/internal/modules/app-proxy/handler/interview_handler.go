@@ -53,7 +53,7 @@ func (h *interviewHandlerImpl) Create(c *gin.Context) {
 		return
 	}
 
-	aiThread, err := h.aiService.CreateThread(c.Request.Context())
+	aiThread, err := h.aiService.CreateThread(c.Request.Context(), interviewer.EntryMessage)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to create AI thread"})
 		return

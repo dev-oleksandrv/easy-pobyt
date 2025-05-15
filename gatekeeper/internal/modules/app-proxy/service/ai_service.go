@@ -7,7 +7,7 @@ import (
 )
 
 type AIService interface {
-	CreateThread(ctx context.Context) (*dto.AIThreadOutputDto, error)
+	CreateThread(ctx context.Context, entryMessage string) (*dto.AIThreadOutputDto, error)
 }
 
 type aiServiceImpl struct {
@@ -20,18 +20,14 @@ func NewAIService(openaiClient *openai.Client) AIService {
 	}
 }
 
-func (s *aiServiceImpl) CreateThread(ctx context.Context) (*dto.AIThreadOutputDto, error) {
+func (s *aiServiceImpl) CreateThread(ctx context.Context, entryMessage string) (*dto.AIThreadOutputDto, error) {
 	aiThread, err := s.openaiClient.CreateThread(ctx, openai.ThreadRequest{
-		// TODO: Add messages to the thread
-		//Messages: []openai.ThreadMessage{
-		//	{
-		//		Role: openai.ThreadMessageRoleUser,
-		//		Content: fmt.Sprintf(
-		//			"The topic for questions generation is this thread is %s.",
-		//			topicName,
-		//		),
-		//	},
-		//},
+		Messages: []openai.ThreadMessage{
+			{
+				Role:    openai.ThreadMessageRoleAssistant,
+				Content: entryMessage,
+			},
+		},
 	})
 	if err != nil {
 		return nil, err

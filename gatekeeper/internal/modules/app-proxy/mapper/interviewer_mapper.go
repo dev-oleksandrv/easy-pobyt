@@ -7,8 +7,9 @@ import (
 
 func MapInterviewerModelToOutput(interviewer *model.Interviewer) *dto.InterviewerOutputDto {
 	return &dto.InterviewerOutputDto{
-		ID:        interviewer.ID,
-		Name:      interviewer.Name,
-		AvatarURL: interviewer.AvatarURL,
+		ID:           interviewer.ID,
+		Name:         interviewer.Name,
+		AvatarURL:    interviewer.AvatarURL,
+		EntryMessage: interviewer.EntryMessage,
 	}
 }

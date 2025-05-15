@@ -7,7 +7,7 @@ import (
 
 type InterviewMessage struct {
 	ID                  uuid.UUID            `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
-	ContextText         string               `gorm:"type:text;not null"`
+	ContentText         string               `gorm:"type:text;not null"`
 	TipsText            string               `gorm:"type:text;not null;default:''"`
 	TranslationText     string               `gorm:"type:text;not null;default:''"`
 	TranslationLanguage LanguageCode         `gorm:"size:10;not null"`

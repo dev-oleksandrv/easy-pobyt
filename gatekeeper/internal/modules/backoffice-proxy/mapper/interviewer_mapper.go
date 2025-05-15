@@ -18,16 +18,21 @@ func MapInterviewerInputToModel(input *dto.InterviewerInputDto, existing *model.
 		existing.AvatarURL = input.AvatarURL
 	}
 
+	if input.EntryMessage != "" {
+		existing.EntryMessage = input.EntryMessage
+	}
+
 	return existing
 }
 
 func MapInterviewerModelToOutput(interviewer *model.Interviewer) *dto.InterviewerOutputDto {
 	return &dto.InterviewerOutputDto{
-		ID:        interviewer.ID.String(),
-		Name:      interviewer.Name,
-		AvatarURL: interviewer.AvatarURL,
-		CreatedAt: interviewer.CreatedAt.Format("2006-01-02 15:04:05"),
-		UpdatedAt: interviewer.UpdatedAt.Format("2006-01-02 15:04:05"),
+		ID:           interviewer.ID.String(),
+		Name:         interviewer.Name,
+		AvatarURL:    interviewer.AvatarURL,
+		EntryMessage: interviewer.EntryMessage,
+		CreatedAt:    interviewer.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdatedAt:    interviewer.UpdatedAt.Format("2006-01-02 15:04:05"),
 	}
 }
 

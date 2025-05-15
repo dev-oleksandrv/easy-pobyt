@@ -1,0 +1,45 @@
+package service
+
+import (
+	"context"
+	"github.com/dev-oleksandrv/easy-pobyt/gatekeeper/internal/modules/app-proxy/dto"
+	"github.com/sashabaranov/go-openai"
+)
+
+type AIService interface {
+	CreateThread(ctx context.Context) (*dto.AIThreadOutputDto, error)
+}
+
+type aiServiceImpl struct {
+	openaiClient *openai.Client
+}
+
+func NewAIService(openaiClient *openai.Client) AIService {
+	return &aiServiceImpl{
+		openaiClient: openaiClient,
+	}
+}
+
+func (s *aiServiceImpl) CreateThread(ctx context.Context) (*dto.AIThreadOutputDto, error) {
+	aiThread, err := s.openaiClient.CreateThread(ctx, openai.ThreadRequest{
+		// TODO: Add messages to the thread
+		//Messages: []openai.ThreadMessage{
+		//	{
+		//		Role: openai.ThreadMessageRoleUser,
+		//		Content: fmt.Sprintf(
+		//			"The topic for questions generation is this thread is %s.",
+		//			topicName,
+		//		),
+		//	},
+		//},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	threadOutput := &dto.AIThreadOutputDto{
+		ID: aiThread.ID,
+	}
+
+	return threadOutput, nil
+}
